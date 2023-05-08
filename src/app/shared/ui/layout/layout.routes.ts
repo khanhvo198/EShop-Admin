@@ -10,6 +10,14 @@ const layoutRoutes: Route[] = [
     loadComponent: () => import('../../../categories/categories.component'),
   },
   {
+    path: 'categories/form',
+    loadComponent: () => import('../../../categories/ui/new-category/new-category.component')
+  },
+  {
+    path: 'categories/form/:id',
+    loadComponent: () => import('../../../categories/ui/edit-category/edit-category.component')
+  },
+  {
     path: 'products',
     loadComponent: () => import('../../../products/products.component'),
   },

@@ -4,19 +4,19 @@
   left: 0;
   right: 0;
   bottom: 0;
+  display: flex;
 }
 
 .side-nav {
   background-color: #0a1d31;
-  width: 200px;
+  width: 225px;
   .logo {
     position: relative;
     height: 105px;
   }
-
 }
 
 .side-nav-content {
-
+  width: calc(100% - 225px);
+  height: 100%;
 }
-
