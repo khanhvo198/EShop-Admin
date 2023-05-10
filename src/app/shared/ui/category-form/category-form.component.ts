@@ -17,6 +17,7 @@ import { Category } from '../../data-access/models/category';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { ActivatedRoute, Router } from '@angular/router';
 
 export interface CategoryFormData {
   name: string;
@@ -50,37 +51,52 @@ export interface CategoryFormData {
           icon="pi pi-arrow-circle-left"
           class="mr-2"
           styleClass="p-button-secondary"
+          (click)="onCancel()"
         ></p-button>
       </div>
     </p-toolbar>
     <form [formGroup]="form">
       <div class="formgrid grid mt-6">
-        <div class="field col">
+        <div class="field col flex flex-column">
           <label for="name">Name</label>
           <input
             id="name"
             type="text"
             formControlName="name"
-            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+            pInputText
+            [class]="
+              this.form.controls.name.invalid && this.isSubmit
+                ? 'ng-invalid ng-dirty'
+                : ''
+            "
           />
+          <span
+            *ngIf="this.form.controls.name.invalid && this.isSubmit"
+            style="color: var(--red-600)"
+            >Please input name</span
+          >
         </div>
-        <div class="field col">
+        <div class="field col flex flex-column">
           <label for="icon">Icon</label>
           <input
             id="icon"
             type="text"
             formControlName="icon"
-            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+            pInputText
+            [class]="
+              this.form.controls.icon.invalid && this.isSubmit
+                ? 'ng-invalid ng-dirty'
+                : ''
+            "
           />
+          <span
+            *ngIf="this.form.controls.icon.invalid && this.isSubmit"
+            style="color: var(--red-600)"
+            >Please input icon</span
+          >
         </div>
         <div class="field col flex flex-column">
           <label for="color">Color</label>
-          <!-- <input
-            id="color"
-            type="text"
-            formControlName="color"
-            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-          /> -->
           <p-colorPicker
             id="color"
             formControlName="color"
@@ -94,6 +110,8 @@ export interface CategoryFormData {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryFormComponent {
+  isSubmit = false;
+
   @Input() isEdit = false;
 
   @Input() set category(category: Category) {
@@ -108,10 +126,18 @@ export class CategoryFormComponent {
   readonly form = inject(NonNullableFormBuilder).group({
     name: ['', [Validators.required]],
     icon: ['', [Validators.required]],
-    color: ['', [Validators.required]],
+    color: ['#000000', [Validators.required]],
   });
 
+  readonly router = inject(Router);
   submit() {
-    this.categorySubmit.emit(this.form.getRawValue());
+    if (!this.form.invalid) {
+      this.categorySubmit.emit(this.form.getRawValue());
+    }
+
+    this.isSubmit = true;
+  }
+  onCancel() {
+    this.router.navigate(['categories']);
   }
 }

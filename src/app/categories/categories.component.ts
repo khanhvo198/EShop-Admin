@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnInit,
   inject,
@@ -9,13 +10,16 @@ import { CardModule } from 'primeng/card';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CategoriesService } from '../shared/data-access/services/categories.service';
 import {
   Category,
   ResponseCategoryApi,
 } from '../shared/data-access/models/category';
-import { Observable, map, of, tap } from 'rxjs';
+import { Observable, delay, map, of, switchMap, tap } from 'rxjs';
+import { provideComponentStore } from '@ngrx/component-store';
+import { CategoriesStore } from './categories.store';
+import { query } from '@angular/animations';
 
 @Component({
   selector: 'app-categories',
@@ -43,9 +47,9 @@ import { Observable, map, of, tap } from 'rxjs';
             ></p-button>
           </div>
         </p-toolbar>
-        <!-- <ng-container *ngIf="categories$ | async as categories"> -->
+
         <p-table
-          [value]="categories"
+          [value]="(categories$ | async)!"
           styleClass="p-datatable-gridlines"
           [tableStyle]="{ 'min-width': '50rem', 'margin-top': '0.5rem' }"
         >
@@ -60,8 +64,20 @@ import { Observable, map, of, tap } from 'rxjs';
           <ng-template pTemplate="body" let-category>
             <tr>
               <td>{{ category.name }}</td>
-              <td>{{ category.icon }}</td>
-              <td>{{ category.color }}</td>
+              <td>
+                <i
+                  style="font-size: 2rem"
+                  class="pi"
+                  [ngClass]="'pi-' + category.icon"
+                ></i>
+              </td>
+              <td>
+                <i
+                  class="pi pi-circle-on"
+                  style="font-size: 2rem"
+                  [ngStyle]="{ color: category.color }"
+                ></i>
+              </td>
               <td>
                 <p-button
                   icon="pi pi-trash"
@@ -79,40 +95,30 @@ import { Observable, map, of, tap } from 'rxjs';
             </tr>
           </ng-template>
         </p-table>
-        <!-- </ng-container> -->
       </p-card>
     </div>
   `,
   styleUrls: ['./categories.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideComponentStore(CategoriesStore)],
 })
 export default class CategoriesComponent implements OnInit {
-  // categories$: Observable<Category[]> = of([]);
-  categories: Category[] = [];
+  categories$: Observable<Category[]> = of([]);
 
-  private readonly categoriesClient = inject(CategoriesService);
+  private readonly router = inject(Router);
+  private readonly store = inject(CategoriesStore);
+
+  constructor() {}
 
   ngOnInit() {
-    this._getCategories();
-    console.log(this.categories);
+    this.categories$ = this.store.categories$;
   }
 
   deleteCategory(id: string) {
-    this.categoriesClient.deleteCategory(id).subscribe((response) => {
-      this._getCategories();
-    });
+    this.store.deleteCategory(id);
   }
 
   editCategory(id: string) {
-    console.log(id);
-  }
-
-  private _getCategories() {
-    this.categoriesClient
-      .getCategories()
-      .subscribe((cats: ResponseCategoryApi) => {
-        this.categories = cats.data.categories;
-        console.log(cats);
-      });
+    this.router.navigate(['categories/form', id]);
   }
 }

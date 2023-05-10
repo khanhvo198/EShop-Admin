@@ -22,7 +22,7 @@ import { provideComponentStore } from '@ngrx/component-store';
   ],
   template: `
     <div class="p-4">
-      <p-card header="Categories" subheader="List of all categories">
+      <p-card header="Add new category">
         <app-category-form
           (categorySubmit)="categorySubmit($event)"
         ></app-category-form>
