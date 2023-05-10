@@ -23,4 +23,14 @@ export class CategoriesService {
   getCategoryById(id: string): Observable<ResponseCategoryApi> {
     return this.httpClient.get<ResponseCategoryApi>(`${this.baseURL}/${id}`);
   }
+
+  editCategory(
+    id: string,
+    category: Category
+  ): Observable<ResponseCategoryApi> {
+    return this.httpClient.patch<ResponseCategoryApi>(
+      `${this.baseURL}/${id}`,
+      category
+    );
+  }
 }

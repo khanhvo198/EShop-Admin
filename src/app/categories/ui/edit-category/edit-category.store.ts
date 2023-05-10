@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   ComponentStore,
   OnStateInit,
@@ -23,6 +24,8 @@ export class EditCategoryStore
 
   private readonly categoriesClient = inject(CategoriesService);
 
+  private readonly router = inject(Router);
+
   ngrxOnStoreInit() {
     this.setState({ category: initSate });
   }
@@ -31,6 +34,20 @@ export class EditCategoryStore
     pipe(
       switchMap((id) => this.categoriesClient.getCategoryById(id)),
       tap((res: any) => this.patchState({ category: res.data.doc }))
+    )
+  );
+
+  readonly updateCategoryEffect = this.effect<{
+    id: string;
+    category: Category;
+  }>(
+    pipe(
+      switchMap(({ id, category }) =>
+        this.categoriesClient.editCategory(id, category)
+      ),
+      tap((res: any) => {
+        this.router.navigate(['/categories']);
+      })
     )
   );
 }
