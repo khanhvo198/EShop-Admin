@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { SideNavComponent } from '../side-nav/side-nav.component';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-layout',

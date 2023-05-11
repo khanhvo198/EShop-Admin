@@ -1,14 +1,14 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { provideComponentStore } from '@ngrx/component-store';
+import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ToolbarModule } from 'primeng/toolbar';
-import { ButtonModule } from 'primeng/button';
 import {
   CategoryFormComponent,
   CategoryFormData,
 } from '../../../shared/ui/category-form/category-form.component';
 import { NewCategoryStore } from './new-category.store';
-import { provideComponentStore } from '@ngrx/component-store';
 
 @Component({
   selector: 'app-new-category',

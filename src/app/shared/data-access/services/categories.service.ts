@@ -1,14 +1,14 @@
-import { inject, Injectable } from '@angular/core';
-import { Category, NewCategory, ResponseCategoryApi } from '../models/category';
 import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Category, ResponseCategoryApi } from '../models/category';
 
 @Injectable({ providedIn: 'root' })
 export class CategoriesService {
   private readonly httpClient = inject(HttpClient);
   private readonly baseURL = 'http://localhost:8080/api/v1/categories';
 
-  createNewCategory(category: NewCategory) {
+  createNewCategory(category: Category) {
     return this.httpClient.post(this.baseURL, category);
   }
 

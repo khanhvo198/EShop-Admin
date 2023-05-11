@@ -4,12 +4,6 @@ export interface Category {
   color: string;
 }
 
-export interface NewCategory {
-  name: string;
-  icon: string;
-  color: string;
-}
-
 export interface ResponseCategoryApi {
   status: string;
   data: {
@@ -17,3 +11,19 @@ export interface ResponseCategoryApi {
   };
   length?: number;
 }
+
+export interface ResponseApi<T> {
+  status: string;
+  data: {
+    doc: T[];
+  };
+  length?: number;
+}
+
+// export interface ResponseApi<T> {
+//   status: string;
+//   data: {
+//     doc: T;
+//   };
+//   length?: number;
+// }

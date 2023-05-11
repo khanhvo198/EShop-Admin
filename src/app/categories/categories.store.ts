@@ -3,14 +3,10 @@ import {
   ComponentStore,
   OnStateInit,
   OnStoreInit,
-  tapResponse,
 } from '@ngrx/component-store';
-import {
-  Category,
-  ResponseCategoryApi,
-} from '../shared/data-access/models/category';
+import { pipe, switchMap, tap } from 'rxjs';
+import { Category } from '../shared/data-access/models/category';
 import { CategoriesService } from '../shared/data-access/services/categories.service';
-import { defer, map, pipe, switchMap, tap } from 'rxjs';
 
 @Injectable()
 export class CategoriesStore

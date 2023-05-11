@@ -30,7 +30,7 @@ import { Category } from 'src/app/shared/data-access/models/category';
       </p-card>
     </div>
   `,
-  styleUrls: ['./edit-category.component.scss'],
+
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideComponentStore(EditCategoryStore)],
 })

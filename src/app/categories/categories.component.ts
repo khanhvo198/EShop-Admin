@@ -1,25 +1,19 @@
+import { CommonModule, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   OnInit,
   inject,
 } from '@angular/core';
-import { CommonModule, NgIf } from '@angular/common';
-import { CardModule } from 'primeng/card';
-import { ToolbarModule } from 'primeng/toolbar';
-import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
 import { Router, RouterLink } from '@angular/router';
-import { CategoriesService } from '../shared/data-access/services/categories.service';
-import {
-  Category,
-  ResponseCategoryApi,
-} from '../shared/data-access/models/category';
-import { Observable, delay, map, of, switchMap, tap } from 'rxjs';
 import { provideComponentStore } from '@ngrx/component-store';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
+import { ToolbarModule } from 'primeng/toolbar';
+import { Observable, of } from 'rxjs';
+import { Category } from '../shared/data-access/models/category';
 import { CategoriesStore } from './categories.store';
-import { query } from '@angular/animations';
 
 @Component({
   selector: 'app-categories',
@@ -98,7 +92,7 @@ import { query } from '@angular/animations';
       </p-card>
     </div>
   `,
-  styleUrls: ['./categories.component.scss'],
+
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideComponentStore(CategoriesStore)],
 })

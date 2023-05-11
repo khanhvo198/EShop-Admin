@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,18 +7,17 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ChipsModule } from 'primeng/chips';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Category } from '../../data-access/models/category';
-import { ToolbarModule } from 'primeng/toolbar';
+import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { ChipsModule } from 'primeng/chips';
 import { ColorPickerModule } from 'primeng/colorpicker';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ToolbarModule } from 'primeng/toolbar';
+import { Category } from '../../data-access/models/category';
 
 export interface CategoryFormData {
   name: string;
@@ -106,7 +106,6 @@ export interface CategoryFormData {
       </div>
     </form>
   `,
-  styleUrls: ['./category-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryFormComponent {
