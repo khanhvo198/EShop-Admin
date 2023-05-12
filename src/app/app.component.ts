@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { Component, importProvidersFrom } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { RouterModule, provideRouter } from '@angular/router';
+import { routes } from './app.routes';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +11,14 @@ import { RouterModule } from '@angular/router';
   template: `<router-outlet></router-outlet>`,
   imports: [RouterModule],
 })
-export class AppComponent {}
+export class AppComponent {
+  public static bootstrap() {
+    bootstrapApplication(this, {
+      providers: [
+        importProvidersFrom(BrowserAnimationsModule),
+        provideHttpClient(),
+        provideRouter(routes),
+      ],
+    }).catch((err) => console.error(err));
+  }
+}
