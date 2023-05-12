@@ -16,3 +16,19 @@ export interface Product {
   isFeatured?: boolean;
   createdAt?: string;
 }
+
+export interface ResponseProductApi {
+  status: string;
+  data: {
+    products: Product[];
+  };
+  length?: number;
+}
+
+export interface ResponseApi<T> {
+  status: string;
+  data: {
+    doc: T[];
+  };
+  length?: number;
+}
