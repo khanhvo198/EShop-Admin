@@ -19,11 +19,3 @@ export interface ResponseApi<T> {
   };
   length?: number;
 }
-
-// export interface ResponseApi<T> {
-//   status: string;
-//   data: {
-//     doc: T;
-//   };
-//   length?: number;
-// }

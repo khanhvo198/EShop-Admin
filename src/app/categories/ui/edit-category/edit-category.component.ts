@@ -13,7 +13,6 @@ import { CardModule } from 'primeng/card';
 import { EditCategoryStore } from './edit-category.store';
 import { provideComponentStore } from '@ngrx/component-store';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Category } from 'src/app/shared/data-access/models/category';
 
 @Component({
   selector: 'app-edit-category',
@@ -28,6 +27,7 @@ import { Category } from 'src/app/shared/data-access/models/category';
           (categorySubmit)="editCategory($event)"
         ></app-category-form>
       </p-card>
+
     </div>
   `,
 

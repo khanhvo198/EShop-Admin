@@ -23,6 +23,16 @@ const layoutRoutes: Route[] = [
     path: 'products',
     loadComponent: () => import('../../../products/products.component'),
   },
+  {
+    path: 'products/form',
+    loadComponent: () =>
+      import('../../../products/ui/new-product/new-product.component'),
+  },
+  {
+    path: 'products/form/:id',
+    loadComponent: () =>
+      import('../../../products/ui/edit-product/edit-product.component'),
+  },
 
   {
     path: 'orders',
