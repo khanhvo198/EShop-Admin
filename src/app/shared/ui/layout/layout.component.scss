@@ -1,22 +1,29 @@
 .layout-container {
+  padding: 0;
+  margin: 0;
+
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  display: flex;
+
+  height: 100%;
 }
 
 .side-nav {
   background-color: #0a1d31;
   width: 225px;
+  position: fixed;
   .logo {
     position: relative;
     height: 105px;
   }
+  height: 100vh;
 }
 
 .side-nav-content {
+  margin-left: 225px;
   width: calc(100% - 225px);
   height: 100%;
 }
