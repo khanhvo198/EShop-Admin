@@ -4,7 +4,7 @@ import {
   OnStateInit,
   OnStoreInit,
 } from '@ngrx/component-store';
-import { pipe, switchMap, tap } from 'rxjs';
+import { exhaustMap, pipe, switchMap, tap } from 'rxjs';
 import { Category } from '../shared/data-access/models/category';
 import { CategoriesService } from '../shared/data-access/services/categories.service';
 
@@ -26,15 +26,25 @@ export class CategoriesStore
 
   readonly getAllCategories = this.effect<void>(
     pipe(
-      switchMap(() => this.categoriesClient.getCategories()),
-      tap((res) => this.patchState({ categories: res.data.categories }))
+      switchMap(() =>
+        this.categoriesClient
+          .getCategories()
+          .pipe(
+            tap((res) => this.patchState({ categories: res.data.categories }))
+          )
+      )
     )
   );
 
   readonly deleteCategory = this.effect<string>(
     pipe(
-      switchMap((id) => this.categoriesClient.deleteCategory(id)),
-      tap((res) => this.patchState({ categories: res.data.categories }))
+      exhaustMap((id) =>
+        this.categoriesClient
+          .deleteCategory(id)
+          .pipe(
+            tap((res) => this.patchState({ categories: res.data.categories }))
+          )
+      )
     )
   );
 }

@@ -5,7 +5,7 @@ import {
   OnStateInit,
   OnStoreInit,
 } from '@ngrx/component-store';
-import { pipe, switchMap, tap } from 'rxjs';
+import { exhaustMap, pipe, switchMap, tap } from 'rxjs';
 import { Category } from 'src/app/shared/data-access/models/category';
 import { CategoriesService } from 'src/app/shared/data-access/services/categories.service';
 
@@ -30,10 +30,13 @@ export class EditCategoryStore
     this.setState({ category: initSate });
   }
 
-  readonly getCategoryById = this.effect<string>(
+  readonly getCategoryEffect = this.effect<string>(
     pipe(
-      switchMap((id) => this.categoriesClient.getCategoryById(id)),
-      tap((res: any) => this.patchState({ category: res.data.doc }))
+      switchMap((id) =>
+        this.categoriesClient
+          .getCategoryById(id)
+          .pipe(tap((res: any) => this.patchState({ category: res.data.doc })))
+      )
     )
   );
 
@@ -42,12 +45,13 @@ export class EditCategoryStore
     category: Category;
   }>(
     pipe(
-      switchMap(({ id, category }) =>
-        this.categoriesClient.editCategory(id, category)
-      ),
-      tap((res: any) => {
-        this.router.navigate(['/categories']);
-      })
+      exhaustMap(({ id, category }) =>
+        this.categoriesClient.editCategory(id, category).pipe(
+          tap((res: any) => {
+            this.router.navigate(['/categories']);
+          })
+        )
+      )
     )
   );
 }
