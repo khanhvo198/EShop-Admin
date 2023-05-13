@@ -6,7 +6,7 @@ import {
 
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { pipe, switchMap } from 'rxjs';
+import { exhaustMap, pipe, switchMap } from 'rxjs';
 import { Category } from '../../../shared/data-access/models/category';
 import { CategoriesService } from '../../../shared/data-access/services/categories.service';
 
@@ -20,7 +20,7 @@ export class NewCategoryStore
 
   readonly createCategory = this.effect<Category>(
     pipe(
-      switchMap((category) =>
+      exhaustMap((category) =>
         this.categoriesClient.createNewCategory(category).pipe(
           tapResponse(
             (response) => {

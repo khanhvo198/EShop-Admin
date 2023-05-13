@@ -5,7 +5,7 @@ import {
   OnStateInit,
   OnStoreInit,
 } from '@ngrx/component-store';
-import { pipe, switchMap, tap } from 'rxjs';
+import { exhaustMap, pipe, switchMap, tap } from 'rxjs';
 import { Category } from 'src/app/shared/data-access/models/category';
 import { CategoriesService } from 'src/app/shared/data-access/services/categories.service';
 
@@ -42,7 +42,7 @@ export class EditCategoryStore
     category: Category;
   }>(
     pipe(
-      switchMap(({ id, category }) =>
+      exhaustMap(({ id, category }) =>
         this.categoriesClient.editCategory(id, category)
       ),
       tap((res: any) => {
