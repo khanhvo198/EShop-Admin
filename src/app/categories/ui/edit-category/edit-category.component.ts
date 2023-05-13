@@ -27,7 +27,6 @@ import { ActivatedRoute, Params } from '@angular/router';
           (categorySubmit)="editCategory($event)"
         ></app-category-form>
       </p-card>
-
     </div>
   `,
 
@@ -40,7 +39,7 @@ export default class EditCategoryComponent implements OnInit {
   readonly route = inject(ActivatedRoute);
   ngOnInit(): void {
     this.route.params.subscribe((param: Params) => {
-      this.store.getCategoryById(param['id']);
+      this.store.getCategoryEffect(param['id']);
       this.id = param['id'];
     });
   }

@@ -36,9 +36,6 @@ export default class NewCategoryComponent {
   private readonly store = inject(NewCategoryStore);
 
   categorySubmit({ name, icon, color }: CategoryFormData) {
-    this.store.createCategory({name, icon, color});
+    this.store.createCategoryEffect({ name, icon, color });
   }
-
-
-
 }

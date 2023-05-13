@@ -30,10 +30,13 @@ export class EditCategoryStore
     this.setState({ category: initSate });
   }
 
-  readonly getCategoryById = this.effect<string>(
+  readonly getCategoryEffect = this.effect<string>(
     pipe(
-      switchMap((id) => this.categoriesClient.getCategoryById(id)),
-      tap((res: any) => this.patchState({ category: res.data.doc }))
+      switchMap((id) =>
+        this.categoriesClient
+          .getCategoryById(id)
+          .pipe(tap((res: any) => this.patchState({ category: res.data.doc })))
+      )
     )
   );
 
@@ -43,11 +46,12 @@ export class EditCategoryStore
   }>(
     pipe(
       exhaustMap(({ id, category }) =>
-        this.categoriesClient.editCategory(id, category)
-      ),
-      tap((res: any) => {
-        this.router.navigate(['/categories']);
-      })
+        this.categoriesClient.editCategory(id, category).pipe(
+          tap((res: any) => {
+            this.router.navigate(['/categories']);
+          })
+        )
+      )
     )
   );
 }
