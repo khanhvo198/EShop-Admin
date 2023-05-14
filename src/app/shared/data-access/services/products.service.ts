@@ -6,13 +6,13 @@ import { Product, ResponseProductApi } from '../models/product';
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
   private readonly httpClient = inject(HttpClient);
-  private readonly baseURL = 'http://localhost:8080/api/v1/categories';
+  private readonly baseURL = 'http://localhost:8080/api/v1/products';
 
   getProducts(): Observable<ResponseProductApi> {
     return this.httpClient.get<ResponseProductApi>(this.baseURL);
   }
 
-  createNewProduct(product: Product): Observable<ResponseProductApi> {
+  createNewProduct(product: FormData): Observable<ResponseProductApi> {
     return this.httpClient.post<ResponseProductApi>(this.baseURL, product);
   }
 

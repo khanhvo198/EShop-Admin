@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -8,6 +13,8 @@ import { RouterLink } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { Category } from '../shared/data-access/models/category';
 import { Product } from '../shared/data-access/models/product';
+import { ProductsStore } from './products.store';
+import { provideComponentStore } from '@ngrx/component-store';
 
 @Component({
   selector: 'app-products',
@@ -55,13 +62,13 @@ import { Product } from '../shared/data-access/models/product';
             <tr>
               <td>{{ product.name }}</td>
               <td>
-                {{ product.image }}
+                <img [src]="product.image" width="200px" height="200px" />
               </td>
               <td>
                 {{ product.price }}
               </td>
               <td>
-                {{ product.countInStock }}
+                {{ product.stock }}
               </td>
               <td>
                 {{ product.category }}
@@ -70,7 +77,11 @@ import { Product } from '../shared/data-access/models/product';
                 {{ product.createdAt }}
               </td>
               <td>
-                <p-button icon="pi pi-trash" styleClass="p-button-danger mr-2">
+                <p-button
+                  icon="pi pi-trash"
+                  styleClass="p-button-danger mr-2"
+                  (click)="deleteProduct(product.id)"
+                >
                 </p-button>
                 <p-button icon="pi pi-pencil" styleClass="p-button-success">
                 </p-button>
@@ -82,7 +93,15 @@ import { Product } from '../shared/data-access/models/product';
     </div>
   `,
   styleUrls: ['./products.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideComponentStore(ProductsStore)],
 })
 export default class ProductsComponent {
-  products$: Observable<Product[]> = of([]);
+  readonly store = inject(ProductsStore);
+
+  readonly products$ = this.store.products$;
+
+  deleteProduct(id: string) {
+    this.store.deleteProductEffect(id);
+  }
 }
