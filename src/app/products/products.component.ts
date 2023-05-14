@@ -1,20 +1,12 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  inject,
-} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CardModule } from 'primeng/card';
-import { ToolbarModule } from 'primeng/toolbar';
-import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { Category } from '../shared/data-access/models/category';
-import { Product } from '../shared/data-access/models/product';
-import { ProductsStore } from './products.store';
 import { provideComponentStore } from '@ngrx/component-store';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ProductsStore } from './products.store';
 
 @Component({
   selector: 'app-products',
