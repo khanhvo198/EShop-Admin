@@ -18,7 +18,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ToolbarModule } from 'primeng/toolbar';
-import { Observable, ReplaySubject, map, of } from 'rxjs';
+import { Observable, ReplaySubject, map, of, tap } from 'rxjs';
 import { Category } from '../../data-access/models/category';
 import { Product } from '../../data-access/models/product';
 import { CategoriesService } from '../../data-access/services/categories.service';
@@ -150,7 +150,7 @@ export class ProductFormComponent {
   categories$: Observable<Category[]> = of([]);
   private imageSubject = new ReplaySubject<string | ArrayBuffer>();
   image$: Observable<string | ArrayBuffer> = of('');
-  image: File = {} as File;
+  image: File | string = {} as File;
 
   readonly categoriesClient = inject(CategoriesService);
 
@@ -163,17 +163,25 @@ export class ProductFormComponent {
 
   @Input() isEdit = false;
 
-  @Input() product(product: Product) {
+  @Input() set product(product: Product) {
+    if (!product) return;
+    console.log(product);
     this.form.setValue({
       name: product.name,
       brand: product.brand,
       price: product.price,
-      stock: product.countInStock,
+      stock: product.stock,
       category: product.category,
       isFeatured: product.isFeatured,
       description: product.description,
       richDescription: product.richDescription,
     });
+
+    if (!product.image) return;
+    this.imageSubject.next(
+      'http://localhost:8080/img/product/' + product.image
+    );
+    this.image = product.image;
   }
 
   @Output() productSubmit = new EventEmitter<FormData>();

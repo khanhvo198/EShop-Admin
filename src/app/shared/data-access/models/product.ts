@@ -1,26 +1,28 @@
 import { Category } from './category';
 
 export interface Product {
-  id: string;
+  id?: string;
   name: string;
   description: string;
   richDescription: string;
   image: string;
-  images: string[];
+  images?: string[];
   brand: string;
   price: string;
   category: Category;
-  countInStock: number;
-  rating: number;
-  numReviews: number;
+  stock: number;
+  rating?: number;
+  numReviews?: number;
   isFeatured: boolean;
-  createdAt: string;
+  createdAt?: string;
 }
 
 export interface ResponseProductApi {
   status: string;
   data: {
-    products: Product[];
+    products?: Product[];
+    product?: Product;
+    doc?: Product;
   };
   length?: number;
 }

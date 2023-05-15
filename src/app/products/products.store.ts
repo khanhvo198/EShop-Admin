@@ -33,7 +33,7 @@ export class ProductsStore
           tapResponse(
             (response) =>
               this.patchState({
-                products: response.data.products.map((product) => {
+                products: response.data.products!.map((product) => {
                   return {
                     ...product,
                     image: 'http://localhost:8080/img/product/' + product.image,
@@ -52,7 +52,15 @@ export class ProductsStore
       exhaustMap((id: string) =>
         this.productsClient.deleteProduct(id).pipe(
           tapResponse(
-            (response) => this.patchState({ products: response.data.products }),
+            (response) =>
+              this.patchState({
+                products: response.data.products!.map((product) => {
+                  return {
+                    ...product,
+                    image: 'http://localhost:8080/img/product/' + product.image,
+                  };
+                }),
+              }),
             (err) => console.error(err)
           )
         )

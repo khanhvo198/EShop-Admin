@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { provideComponentStore } from '@ngrx/component-store';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -75,7 +75,11 @@ import { ProductsStore } from './products.store';
                   (click)="deleteProduct(product.id)"
                 >
                 </p-button>
-                <p-button icon="pi pi-pencil" styleClass="p-button-success">
+                <p-button
+                  icon="pi pi-pencil"
+                  styleClass="p-button-success"
+                  (click)="updateProduct(product.id)"
+                >
                 </p-button>
               </td>
             </tr>
@@ -93,7 +97,12 @@ export default class ProductsComponent {
 
   readonly products$ = this.store.products$;
 
+  readonly router = inject(Router);
+
   deleteProduct(id: string) {
     this.store.deleteProductEffect(id);
+  }
+  updateProduct(id: string) {
+    this.router.navigate(['products/form', id]);
   }
 }

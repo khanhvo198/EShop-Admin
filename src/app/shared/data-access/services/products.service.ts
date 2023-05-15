@@ -24,7 +24,7 @@ export class ProductsService {
     return this.httpClient.get<ResponseProductApi>(`${this.baseURL}/${id}`);
   }
 
-  editProduct(id: string, Product: Product): Observable<ResponseProductApi> {
+  editProduct(id: string, Product: FormData): Observable<ResponseProductApi> {
     return this.httpClient.patch<ResponseProductApi>(
       `${this.baseURL}/${id}`,
       Product
