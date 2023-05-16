@@ -1,12 +1,12 @@
 import { Injectable, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   ComponentStore,
   OnStateInit,
   OnStoreInit,
   tapResponse,
 } from '@ngrx/component-store';
-import { exhaustMap, pipe, switchMap } from 'rxjs';
+import { exhaustMap, pipe, switchMap, withLatestFrom } from 'rxjs';
 import { Category } from 'src/app/shared/data-access/models/category';
 import { Product } from 'src/app/shared/data-access/models/product';
 import { ProductsService } from 'src/app/shared/data-access/services/products.service';
@@ -26,17 +26,28 @@ const initState: Product = {
 @Injectable()
 export class EditProductStore
   extends ComponentStore<{ product: Product }>
-  implements OnStoreInit
+  implements OnStoreInit, OnStateInit
 {
+  private readonly router = inject(Router);
+
+  private readonly route = inject(ActivatedRoute);
+
+  private readonly productsClient = inject(ProductsService);
+
+  readonly product$ = this.select((s) => s.product, { debounce: true });
+
+  readonly id$ = this.select(
+    this.route.params,
+    (params) => params['id'] as string
+  );
+
   ngrxOnStoreInit() {
     this.setState({ product: initState });
   }
 
-  private readonly router = inject(Router);
-
-  readonly product$ = this.select((s) => s.product, { debounce: true });
-
-  private readonly productsClient = inject(ProductsService);
+  ngrxOnStateInit() {
+    this.getProductEffect(this.id$);
+  }
 
   readonly getProductEffect = this.effect<string>(
     pipe(
@@ -44,7 +55,6 @@ export class EditProductStore
         this.productsClient.getProductById(id).pipe(
           tapResponse(
             (response) => {
-              console.log(response);
               this.patchState({
                 product: response.data.doc,
               });
@@ -56,9 +66,10 @@ export class EditProductStore
     )
   );
 
-  readonly updateProductEffect = this.effect<{ id: string; product: FormData }>(
+  readonly updateProductEffect = this.effect<{ product: FormData }>(
     pipe(
-      exhaustMap(({ id, product }) =>
+      withLatestFrom(this.id$),
+      exhaustMap(([{ product }, id]) =>
         this.productsClient.editProduct(id, product).pipe(
           tapResponse(
             (response) => {

@@ -88,7 +88,6 @@ import { ProductsStore } from './products.store';
       </p-card>
     </div>
   `,
-  styleUrls: ['./products.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideComponentStore(ProductsStore)],
 })

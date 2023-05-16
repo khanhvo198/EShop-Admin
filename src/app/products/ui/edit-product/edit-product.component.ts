@@ -28,20 +28,10 @@ import { provideComponentStore } from '@ngrx/component-store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideComponentStore(EditProductStore)],
 })
-export default class EditProductComponent implements OnInit {
+export default class EditProductComponent {
   readonly store = inject(EditProductStore);
 
-  id = '';
   editProduct(product: FormData) {
-    this.store.updateProductEffect({ id: this.id, product });
-  }
-
-  private readonly route = inject(ActivatedRoute);
-
-  ngOnInit() {
-    this.route.params.subscribe((params: Params) => {
-      this.store.getProductEffect(params['id']);
-      this.id = params['id'];
-    });
+    this.store.updateProductEffect({ product });
   }
 }
