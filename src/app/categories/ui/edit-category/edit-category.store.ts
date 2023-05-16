@@ -1,15 +1,15 @@
 import { Injectable, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   ComponentStore,
   OnStateInit,
   OnStoreInit,
 } from '@ngrx/component-store';
-import { exhaustMap, pipe, switchMap, tap } from 'rxjs';
+import { exhaustMap, pipe, switchMap, tap, withLatestFrom } from 'rxjs';
 import { Category } from 'src/app/shared/data-access/models/category';
 import { CategoriesService } from 'src/app/shared/data-access/services/categories.service';
 
-const initSate: Category = {
+const initCategory: Category = {
   name: '',
   color: '',
   icon: '',
@@ -18,16 +18,27 @@ const initSate: Category = {
 @Injectable()
 export class EditCategoryStore
   extends ComponentStore<{ category: Category }>
-  implements OnStoreInit
+  implements OnStoreInit, OnStateInit
 {
-  readonly category$ = this.select((s) => s.category);
-
   private readonly categoriesClient = inject(CategoriesService);
 
   private readonly router = inject(Router);
 
+  private readonly route = inject(ActivatedRoute);
+
+  readonly category$ = this.select((s) => s.category);
+
+  private readonly id$ = this.select(
+    this.route.params,
+    (params) => params['id'] as string
+  );
+
   ngrxOnStoreInit() {
-    this.setState({ category: initSate });
+    this.setState({ category: initCategory });
+  }
+
+  ngrxOnStateInit() {
+    this.getCategoryEffect(this.id$);
   }
 
   readonly getCategoryEffect = this.effect<string>(
@@ -35,19 +46,19 @@ export class EditCategoryStore
       switchMap((id) =>
         this.categoriesClient
           .getCategoryById(id)
-          .pipe(tap((res: any) => this.patchState({ category: res.data.doc })))
+          .pipe(tap((res) => this.patchState({ category: res.data.doc })))
       )
     )
   );
 
   readonly updateCategoryEffect = this.effect<{
-    id: string;
     category: Category;
   }>(
     pipe(
-      exhaustMap(({ id, category }) =>
+      withLatestFrom(this.id$),
+      exhaustMap(([{ category }, id]) =>
         this.categoriesClient.editCategory(id, category).pipe(
-          tap((res: any) => {
+          tap((res) => {
             this.router.navigate(['/categories']);
           })
         )

@@ -8,7 +8,9 @@ export interface Category {
 export interface ResponseCategoryApi {
   status: string;
   data: {
-    categories: Category[];
+    categories?: Category[];
+    category?: Category;
+    doc?: Category;
   };
   length?: number;
 }

@@ -33,20 +33,13 @@ import { ActivatedRoute, Params } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideComponentStore(EditCategoryStore)],
 })
-export default class EditCategoryComponent implements OnInit {
+export default class EditCategoryComponent {
   readonly store = inject(EditCategoryStore);
-  private id = '';
+
   readonly route = inject(ActivatedRoute);
-  ngOnInit(): void {
-    this.route.params.subscribe((param: Params) => {
-      this.store.getCategoryEffect(param['id']);
-      this.id = param['id'];
-    });
-  }
 
   editCategory({ name, color, icon }: CategoryFormData) {
     this.store.updateCategoryEffect({
-      id: this.id,
       category: { name, color, icon },
     });
   }

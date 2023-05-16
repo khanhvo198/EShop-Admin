@@ -157,7 +157,7 @@ export class ProductFormComponent {
   ngOnInit() {
     this.categories$ = this.categoriesClient
       .getCategories()
-      .pipe(map((res) => res.data.categories));
+      .pipe(map((res) => res.data.categories!));
     this.image$ = this.imageSubject.asObservable();
   }
 
