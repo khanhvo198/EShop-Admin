@@ -1,18 +1,13 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  inject,
-} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { provideComponentStore } from '@ngrx/component-store';
+import { CardModule } from 'primeng/card';
 import {
   CategoryFormComponent,
   CategoryFormData,
 } from '../../../shared/ui/category-form/category-form.component';
-import { CardModule } from 'primeng/card';
 import { EditCategoryStore } from './edit-category.store';
-import { provideComponentStore } from '@ngrx/component-store';
-import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-edit-category',

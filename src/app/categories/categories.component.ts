@@ -102,8 +102,6 @@ export default class CategoriesComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly store = inject(CategoriesStore);
 
-  constructor() {}
-
   ngOnInit() {
     this.categories$ = this.store.categories$;
   }
