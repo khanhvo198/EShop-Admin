@@ -63,7 +63,7 @@ import { ProductsStore } from './products.store';
                 {{ product.stock }}
               </td>
               <td>
-                {{ product.category }}
+                {{ product.category.name }}
               </td>
               <td>
                 {{ product.createdAt }}
