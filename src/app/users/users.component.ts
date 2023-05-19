@@ -6,14 +6,22 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { provideComponentStore } from '@ngrx/component-store';
 import { UserStore } from './users.store';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, CardModule, ToolbarModule, ButtonModule, TableModule],
+  imports: [
+    CommonModule,
+    CardModule,
+    ToolbarModule,
+    ButtonModule,
+    TableModule,
+    RouterLink,
+  ],
   template: `
     <div class="p-4">
-      <p-card header="Categories" subheader="List of all categories">
+      <p-card header="Users" subheader="List of all users">
         <p-toolbar>
           <div class="p-toolbar-group-start">
             <p-button

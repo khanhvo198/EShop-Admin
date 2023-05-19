@@ -42,6 +42,16 @@ const layoutRoutes: Route[] = [
     path: 'users',
     loadComponent: () => import('../../../users/users.component'),
   },
+  {
+    path: 'users/form',
+    loadComponent: () =>
+      import('../../../users/ui/new-user/new-user.component'),
+  },
+  {
+    path: 'users/form/:id',
+    loadComponent: () =>
+      import('../../../users/ui/edit-user/edit-user.component'),
+  },
 ];
 
 export default layoutRoutes;
